@@ -46,6 +46,6 @@ resource "aws_route_table" "internet_route" {
 }
 
 resource "aws_main_route_table_association" "rt-assoc" {
-  vpc_id = aws_vpc.vpc.id
+  vpc_id         = aws_vpc.vpc.id
   route_table_id = aws_route_table.internet_route.id
 }
