@@ -18,9 +18,10 @@ resource "aws_internet_gateway" "ig" {
 }
 
 #------------------------------------------------------------------------------
-# AWS Subnets - Public (Dynamic)
+# AWS Subnets - Public
 #------------------------------------------------------------------------------
 resource "aws_subnet" "public_subnets" {
+  count                   = length(var.availability_zones)
   vpc_id                  = aws_vpc.vpc.id
   cidr_block              = element(var.public_subnets_cidrs, count.index)
   map_public_ip_on_launch = true
