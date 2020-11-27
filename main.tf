@@ -1,4 +1,6 @@
-# VPC specified
+#------------------------------------------------------------------------------
+# AWS Virtual Private Network
+#------------------------------------------------------------------------------
 resource "aws_vpc" "vpc" {
   cidr_block           = var.vpc_cidr_block
   enable_dns_support   = true
@@ -8,18 +10,26 @@ resource "aws_vpc" "vpc" {
   }
 }
 
-# Create an internet gateway associated with our VPC
+#------------------------------------------------------------------------------
+# AWS Internet Gateway
+#------------------------------------------------------------------------------
 resource "aws_internet_gateway" "ig" {
   vpc_id = aws_vpc.vpc.id
 }
 
-# Create one subnet for the VPC
-resource "aws_subnet" "subnet_1" {
-  vpc_id     = aws_vpc.vpc.id
-  cidr_block = var.cidr_block_subnet
+#------------------------------------------------------------------------------
+# AWS Subnets - Public (Dynamic)
+#------------------------------------------------------------------------------
+resource "aws_subnet" "public_subnets" {
+  vpc_id                  = aws_vpc.vpc.id
+  cidr_block              = element(var.public_subnets_cidrs, count.index)
+  map_public_ip_on_launch = true
 }
 
-# Route table
+
+#------------------------------------------------------------------------------
+# AWS Route Table
+#------------------------------------------------------------------------------
 resource "aws_route_table" "internet_route" {
   vpc_id = aws_vpc.vpc.id
 
@@ -34,7 +44,6 @@ resource "aws_route_table" "internet_route" {
   }
 }
 
-# Route table association
 resource "aws_main_route_table_association" "rt-assoc" {
   vpc_id = aws_vpc.vpc.id
   route_table_id = aws_route_table.internet_route.id
