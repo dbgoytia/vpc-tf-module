@@ -71,7 +71,7 @@ resource "aws_route_table" "private" {
 #------------------------------------------------------------------------------
 # AWS Subnets - Private
 #------------------------------------------------------------------------------
-resource "aws_subnet" "private" {
+resource "aws_subnet" "private_subnets" {
   count             = length(var.private_subnets) > 0 ? length(var.private_subnets) : 0
   availability_zone = element(var.azs, count.index)
   vpc_id            = aws_vpc.vpc.id
@@ -92,7 +92,7 @@ resource "aws_route" "private_nat_gateway" {
 #------------------------------------------------------------------------------
 resource "aws_route_table_association" "private" {
   count     = length(var.private_subnets) > 0 ? length(var.private_subnets) : 0
-  subnet_id = element(aws_subnet.private.*.id, count.index)
+  subnet_id = element(aws_subnet.private_subnets.*.id, count.index)
   route_table_id = element(
     aws_route_table.private.*.id, 0
   )
