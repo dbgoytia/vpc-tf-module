@@ -18,6 +18,11 @@ variable "private_subnets" {
   type        = list
 }
 
+variable "azs" {
+  description = "List of Availability Zones to use for deployment"
+  type        = list(string)
+}
+
 variable "region" {
   description = "Region to be used for deployment"
   type        = string
