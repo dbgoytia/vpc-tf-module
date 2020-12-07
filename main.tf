@@ -72,19 +72,19 @@ resource "aws_route_table" "private" {
 # AWS Subnets - Private
 #------------------------------------------------------------------------------
 resource "aws_subnet" "private" {
-  count      = length(var.private_subnets) > 0 ? length(var.private_subnets) : 0
-  vpc_id     = aws_vpc.vpc.id
-  cidr_block = var.private_subnets[count.index]
+  count             = length(var.private_subnets) > 0 ? length(var.private_subnets) : 0
+  availability_zone = element(var.azs, count.index)
+  vpc_id            = aws_vpc.vpc.id
+  cidr_block        = var.private_subnets[count.index]
 }
 
 # AWS Route
 resource "aws_route" "private_nat_gateway" {
-  count  = var.create_natted_subnet ? 1 : 0
-
+  count                  = var.create_natted_subnet ? 1 : 0
   route_table_id         = element(aws_route_table.private.*.id, count.index)
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id         = element(aws_nat_gateway.gw.*.id, count.index)
-  
+
 }
 
 #------------------------------------------------------------------------------
@@ -106,6 +106,7 @@ resource "aws_subnet" "public_subnets" {
   count                   = length(var.public_subnets_cidrs)
   vpc_id                  = aws_vpc.vpc.id
   cidr_block              = element(var.public_subnets_cidrs, count.index)
+  availability_zone       = element(var.azs, count.index)
   map_public_ip_on_launch = true
 }
 
@@ -118,7 +119,7 @@ resource "aws_route_table" "internet_route" {
 
   route {
     # Allow traffic from our internet gateway
-    cidr_block     = "0.0.0.0/0"
+    cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.igw.id
   }
 
