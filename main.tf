@@ -8,11 +8,6 @@ terraform {
       region = "us-east-1"
     }
   }
-  backend "s3" {
-    bucket = "691e4876-f921-0542-c9c7-0989c184fe8c-backend"
-    key    = "terraform.tfstate"
-    region = "us-east-1"
-  }
 }
 
 # --------------------------------------
