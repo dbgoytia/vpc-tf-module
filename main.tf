@@ -1,32 +1,10 @@
-# --------------------------------------
-# AWS Backend configuration
-# --------------------------------------
-terraform {
-  required_providers {
-    aws = {
-      source = "hashicorp/aws"
-      region = "us-east-1"
-    }
-  }
-}
-
-# --------------------------------------
-# AWS Provider
-# --------------------------------------
-provider "aws" {
-  region = var.region
-}
-
 #------------------------------------------------------------------------------
-# AWS Virtual Private Network
+# AWS VPC
 #------------------------------------------------------------------------------
 resource "aws_vpc" "vpc" {
   cidr_block           = var.vpc_cidr_block
   enable_dns_support   = true
   enable_dns_hostnames = true
-  tags = {
-    Lab = "Network card performance"
-  }
 }
 
 #------------------------------------------------------------------------------
@@ -43,6 +21,7 @@ resource "aws_eip" "nat_gw_eip" {
   count = var.create_natted_subnet == true ? 1 : 0
   vpc   = true
 }
+
 #------------------------------------------------------------------------------
 # AWS Subnets - NAT gateway
 #------------------------------------------------------------------------------
@@ -116,10 +95,6 @@ resource "aws_route_table" "internet_route" {
     # Allow traffic from our internet gateway
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.igw.id
-  }
-
-  tags = {
-    Lab = "Network card performance"
   }
 }
 
