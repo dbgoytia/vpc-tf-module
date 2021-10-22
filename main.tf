@@ -32,7 +32,7 @@ resource "aws_subnet" "public_subnets" {
   cidr_block              = element(var.public_subnets_cidrs, count.index)
   availability_zone       = element(var.azs, count.index)
   map_public_ip_on_launch = true
-  
+
   tags = merge(
     {
       "Name" = format(
@@ -141,10 +141,10 @@ resource "aws_eip" "nat_gw_eip" {
   )
 }
 
-locals{
+locals {
   nat_gateway_ips = split(
     ",",
-    join(",", aws_eip.nat_gw_eip.*.id), 
+    join(",", aws_eip.nat_gw_eip.*.id),
   )
 }
 
