@@ -4,18 +4,13 @@ variable "vpc_cidr_block" {
 }
 
 variable "public_subnets_cidrs" {
-  type        = list
+  type        = list(any)
   description = "List of private subnets to create in CIDR notation."
 }
 
-variable "create_natted_subnet" {
-  description = "If you set this variable to true, the module will deploy a VPC NAT Gateway in front of the public subnet (Will assign an Elastic IP)"
-  type        = bool
-}
-
-variable "private_subnets" {
-  description = "Create a variable number of private subnets"
-  type        = list
+variable "private_subnets_cidrs" {
+  description = "List of public subnets to create in CIDR notation."
+  type        = list(any)
 }
 
 variable "azs" {
@@ -26,4 +21,16 @@ variable "azs" {
 variable "region" {
   description = "Region to be used for deployment"
   type        = string
+}
+
+# new 
+variable "name" {
+  description = "Name of the VPC."
+  type        = string
+}
+
+variable "tags" {
+  description = "General tags to assign to the VPC."
+  type        = map(any)
+  default     = {}
 }

@@ -1,5 +1,5 @@
 output "vpc_id" {
-  value = aws_vpc.vpc.id
+  value = aws_vpc.this.id
 }
 
 output "public_subnets_ids" {
@@ -24,5 +24,5 @@ output "private_subnets_cidrs" {
 
 output "default_sg" {
   description = "Output VPC default security group"
-  value       = aws_vpc.vpc.default_security_group_id
+  value       = aws_vpc.this.default_security_group_id
 }

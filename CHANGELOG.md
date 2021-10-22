@@ -1,0 +1,1 @@
+- VPC creation with one NAT Gateway in each private subnet.

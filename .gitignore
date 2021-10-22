@@ -1,6 +1,9 @@
+# mac
+.DS_Store
+
 # Local .terraform directories
 **/.terraform/*
-.terraform
+
 # .tfstate files
 *.tfstate
 *.tfstate.*
@@ -12,8 +15,8 @@ crash.log
 # password, private keys, and other secrets. These should not be part of version 
 # control as they are data points which are potentially sensitive and subject 
 # to change depending on the environment.
-#
-*.tfvars
+# #
+# *.tfvars
 
 # Ignore override files as they are usually used to override resources locally and so
 # are not checked in
@@ -32,3 +35,12 @@ override.tf.json
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
+
+
+# lambda function
+lambda_src/*
+builds/*
+
+tfplan
+
+*.terraform.lock.hcl
